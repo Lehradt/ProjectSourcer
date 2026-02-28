@@ -157,3 +157,13 @@
                 box-sizing: border-box;
                 margin-bottom: 10px;
             }
+            footer {
+                background-color: #202020;
+                color: #d3d3d3;
+                padding: 10px;
+                position: fixed;
+                width: 100%;
+                bottom: 0;
+                left: 0;
+                z-index: 5;
+            }
