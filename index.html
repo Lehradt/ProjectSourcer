@@ -74,7 +74,12 @@
                      const url = document.querySelector('.url-input').value;
                      const title = document.querySelector('.title-input').value || "[TITEL UNBEKANNT]";
                      const author = document.querySelector('.author-input').value || "O.A.";
-                     const date = new Date().toLocaleDateString('de-DE');
+                     const date = new Date().toLocaleDateString('de-DE', { 
+                         day: '2-digit', 
+                         month: '2-digit', 
+                         year: 'numeric' 
+                     });
+
                      let website = "WEBSITE";
                      try {
                          if (url) {
@@ -104,7 +109,7 @@
                  document.getElementById('copySource').addEventListener('click', () => {
                      editArea.select();
                      document.execCommand('copy');
-                     editedStatus.textContent = "Kopiert!";
+                     alert("Kopiert!")
                      editedStatus.classList.remove('none');
                  });
              }
