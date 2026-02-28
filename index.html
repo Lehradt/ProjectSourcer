@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Project Sourcer</title>
+        <link rel="icon" href="icon.png">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <div class="left">
+                <img class="item icon" src="icon.png" alt="Icon">
+                <h1 class="item title">Project Sourcer</h1>
+                <p class="item description">Creates sources based on given information</p>
+            </div>
+            <div class="right">
+                <a class="item link" href="https://lehradt.github.io/profile">Profile</a>
+                <a class="item link" href="https://discord.com/users/1151971830983311441">Discord</a>
+            </div>
+        </header>
+        <main>
+            <nav class="start">
+                <h3>Input</h3>
+                <div class="cathegory">
+                    <label class="label">URL</label>
+                    <input type="url" name="url" class="input url-input" placeholder="https://example.com" required>
+                    <p id="error" class="none"></p>
+                </div>
+                <div class="cathegory">
+                    <label class="label">Website</label>
+                    <p id="website" class="none"></p>
+                </div>
+                <div class="cathegory">
+                    <label class="label">Titel (optionally)</label>
+                    <input type="text" name="title" class="input title-input" placeholder="How to open a bottle?">
+                </div>
+                <div class="cathegory">
+                    <label class="label">Author (optionally)</label>
+                    <input type="text" name="author" class="input author-input" placeholder="John Doe">
+                </div>
+                <div class="cathegory">
+                    <label class="label">Last viewed</label>
+                    <p id="lastViewed" class="none"></p>
+                </div>
+            </nav>
+            <section>
+                <div class="section preview">
+                    <h3>Preview - Website</h3>
+                    <iframe href="" class="iframe"></iframe>
+                </div>
+                <div class="section preview">
+                    <h3>Preview - Source</h3>
+                    <output class="output" id="output">none</output>
+                </div>
+            </section>
+            <aside>
+                <h3>Source</h3>
+                <textarea id="editSource" class="edit" name="editSource">
+                </textarea>
+                <p id="edited" class="none edited"></p>
+                <button id="copySource">Copy Source</button>
+            </aside>
+        </main>
+        <script>
+            window.onload = () => {
+                    const inputs = document.querySelectorAll('.input');
+                    const output = document.getElementById('output');
+                    const lastViewedDisplay = document.getElementById('lastViewed');
+                    const iframe = document.querySelector('.iframe');
+                    const editArea = document.getElementById('editSource');
+                    const generateSource = () => {
+                        const url = document.querySelector('.url-input').value;
+                        const title = document.querySelector('.title-input').value || "[Titel unbekannt]";
+                        const author = document.querySelector('.author-input').value || "o.A.";
+                        const date = new Date().toLocaleDateString('de-DE');
+                        if (url) {
+                            const sourceString = `${author}: ${title}. In: Website-Name, ${url} (Abgerufen am ${date})`;
+                            output.textContent = sourceString;
+                            editArea.value = sourceString;
+                            lastViewedDisplay.textContent = date;
+                            lastViewedDisplay.classList.remove('none');
+                            iframe.src = url;
+                        }
+                    };
+                    inputs.forEach(input => input.addEventListener('input', generateSource));
+                    document.getElementById('copySource').addEventListener('click', () => {
+                        editArea.select();
+                        document.execCommand('copy');
+                        document.getElementById('edited').textContent = "Kopiert!";
+                        document.getElementById('edited').classList.remove('none');
+                    });
+                }
+        </script>
+    </body>
+</html>
