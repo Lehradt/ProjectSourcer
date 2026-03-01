@@ -18,11 +18,11 @@ window.onload = () => {
                      let website = "WEBSITE";
                      try {
                          if (url) {
+                             const urlObj = new URL(url);
                              const hostname = urlObj.hostname.replace('www.', '');
                              const website = hostname.split('.')[0];
-                             if (website) {
-                               document.getElementById("website").innerText = website;
-                             }
+                             const websiteDisplay = document.getElementById("website");
+                             if (websiteDisplay) websiteDisplay.innerText = website;
                          }
                      } catch (e) { website = "URL UNGÜLTIG"; }
                      if (url) {
