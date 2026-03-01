@@ -52,10 +52,16 @@ window.onload = () => {
                      }
                  });
                  inputs.forEach(input => input.addEventListener('input', generateSource));
-                 document.getElementById('copySource').addEventListener('click', () => {
-                     editArea.select();
-                     document.execCommand('copy');
-                     alert("Kopiert!")
-                     editedStatus.classList.remove('none');
+                 document.getElementById('copySource').addEventListener('click', async () => {
+                     try {
+                         await navigator.clipboard.writeText(editArea.value);
+                         alert("Kopiert!");
+                         editedStatus.classList.remove('none');
+                     } catch (err) {
+                         console.error('Fehler beim Kopieren: ', err);     
+                         editArea.select();
+                         document.execCommand('copy');
+                     }
                  });
+
              }
