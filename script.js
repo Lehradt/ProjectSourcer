@@ -27,8 +27,7 @@ window.onload = () => {
                              }    
                              let siteName = parts[0];
                              website = siteName.charAt(0).toUpperCase() + siteName.slice(1);
-                             const websiteDisplay = document.getElementById("website");
-                             if (websiteDisplay) websiteDisplay.innerText = website;
+                             document.getElementById("website").innerText = website;
                          }
                      } catch (e) { 
                          website = "URL UNGÜLTIG"; 
