@@ -18,8 +18,8 @@ window.onload = () => {
                      let website = "WEBSITE";
                      try {
                          if (url) {
-                             const urlObj = new URL(url);
-                             website = `${urlObj.protocol}//${urlObj.hostname}/`;
+                             const hostname = urlObj.hostname.replace('www.', '');
+                             const website = hostname.split('.')[0];
                              if (website) {
                                document.getElementById("website").innerText = website;
                              }
