@@ -167,3 +167,6 @@
                 left: 0;
                 z-index: 5;
             }
+            footer a {
+                color: #4DAAFC;
+            }
