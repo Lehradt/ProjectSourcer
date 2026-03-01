@@ -20,6 +20,9 @@ window.onload = () => {
                          if (url) {
                              const urlObj = new URL(url);
                              website = `${urlObj.protocol}//${urlObj.hostname}/`;
+                             if (website) {
+                               document.getElementById("website").innerText = website;
+                             }
                          }
                      } catch (e) { website = "URL UNGÜLTIG"; }
                      if (url) {
