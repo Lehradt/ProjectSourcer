@@ -19,14 +19,20 @@ window.onload = () => {
                      try {
                          if (url) {
                              const urlObj = new URL(url);
-                             const hostname = urlObj.hostname.replace('www.', '');
-                             const website = hostname.split('.')[0];
-                             let rawName = hostname.split('.')[0];
-                             website = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+                             let hostname = urlObj.hostname.replace(/^www\./, '');
+                             let parts = hostname.split('.');   
+                             if (parts.length > 2) {
+                                 const isShortTLD = parts[parts.length - 2].length <= 3;
+                                 parts = isShortTLD ? parts.slice(-3) : parts.slice(-2);
+                             }    
+                             let siteName = parts[0];
+                             website = siteName.charAt(0).toUpperCase() + siteName.slice(1);
                              const websiteDisplay = document.getElementById("website");
                              if (websiteDisplay) websiteDisplay.innerText = website;
                          }
-                     } catch (e) { website = "URL UNGÜLTIG"; }
+                     } catch (e) { 
+                         website = "URL UNGÜLTIG"; 
+                     }
                      if (url) {
                          const sourceString = `${author}: "${title}", in: ${website}, URL: ${url} [Letzter Zugriff: ${date}]`;
                          output.textContent = sourceString;
