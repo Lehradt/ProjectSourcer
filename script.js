@@ -21,7 +21,7 @@ window.onload = () => {
                 generateSource();
             }
         } catch (error) {
-            console.warn("Metadaten konnten nicht geladen werden:", error);
+            console.warn("Metadata could not be loaded:", error);
         }
     };
     const generateSource = () => {
@@ -63,7 +63,7 @@ window.onload = () => {
     };
     editArea.addEventListener('input', () => {
         if (editArea.value !== output.textContent) {
-            editedStatus.textContent = "Geändert";
+            editedStatus.textContent = "You changed the source.";
             editedStatus.classList.remove('none');
         } else {
             editedStatus.classList.add('none');
@@ -76,10 +76,10 @@ window.onload = () => {
     document.getElementById('copySource').addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(editArea.value);
-            alert("Kopiert!");
+            alert("Copied!");
             editedStatus.classList.remove('none');
         } catch (err) {
-            console.error('Fehler beim Kopieren: ', err);     
+            console.error('Error while copying: ', err);     
             editArea.select();
             document.execCommand('copy');
         }
