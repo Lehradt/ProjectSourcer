@@ -21,6 +21,8 @@ window.onload = () => {
                              const urlObj = new URL(url);
                              const hostname = urlObj.hostname.replace('www.', '');
                              const website = hostname.split('.')[0];
+                             let rawName = hostname.split('.')[0];
+                             website = rawName.charAt(0).toUpperCase() + rawName.slice(1);
                              const websiteDisplay = document.getElementById("website");
                              if (websiteDisplay) websiteDisplay.innerText = website;
                          }
