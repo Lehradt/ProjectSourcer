@@ -7,11 +7,14 @@ window.onload = () => {
     const editedStatus = document.getElementById('edited');
     const urlInput = document.querySelector('.url-input');
     const fetchMetadata = async (url) => {
-        if (!url || !url.startsWith('http')) return;  
+        let checkUrl = url;
+        if (checkUrl && !checkUrl.startsWith('http')) {
+            checkUrl = 'https://' + checkUrl;
+        }
+        if (!checkUrl || !checkUrl.startsWith('http')) return;      
         try {
-            const response = await fetch(`https://api.microlink.io{encodeURIComponent(url)}`);
+            const response = await fetch(`https://microlink.io{encodeURIComponent(checkUrl)}`);
             const result = await response.json();
-            
             if (result.status === 'success') {
                 const data = result.data;
                 const titleField = document.querySelector('.title-input');
@@ -25,7 +28,11 @@ window.onload = () => {
         }
     };
     const generateSource = () => {
-        const url = urlInput.value;
+        let url = urlInput.value.trim();
+        if (url && !url.match(/^[a-zA-Z]+:\/\//)) {
+            url = 'https://' + url;
+            urlInput.value = url;
+        }
         const title = document.querySelector('.title-input').value || "[TITEL UNBEKANNT]";
         const author = document.querySelector('.author-input').value || "O.A.";
         const date = new Date().toLocaleDateString('de-DE', { 
@@ -70,6 +77,7 @@ window.onload = () => {
         }
     });
     inputs.forEach(input => input.addEventListener('input', generateSource));
+
     urlInput.addEventListener('change', () => {
         fetchMetadata(urlInput.value);
     });
