@@ -1,451 +1,263 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Project Sourcer</title>
-        <meta property="og:title" content="Project Sourcer">
-        <meta property="og:description" content="Creates sources based on given information.">
-        <meta property="og:image" content="https://lehradt.github.io/ProjectSourcer/icon.png">
-        <meta property="og:url" content="https://lehradt.github.io/ProjectSourcer">
-        <meta property="og:type" content="website">
-        <link rel="icon" href="icon.png">
-        <style>
-            html {
-                padding: 0;
-                margin: 0;
-                font-family:Arial, Helvetica, sans-serif;
-                background-color: #2d2d2d;
-            }
-            header {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 75px;
-                padding: 10px;
-                align-items: center;
-                display: flex;
-                background-color: #202020;
-                color: #d3d3d3;
-                justify-content: space-between;
-                z-index: 3;
-            }
-            .left {
-                align-items: center;
-                display: flex;
-            }
-            .item {
-                margin-left: 10px;
-            }
-            .icon {
-                height: 55px;
-                width: 55px;
-                border-radius: 50%;
-            }
-            .description {
-                font-size: 10px;
-                position: relative;
-                top: 8px;
-            }
-            .right {
-                align-items: center;
-                display: flex;
-                padding-right: 20px;
-            }
-            .link {
-                background-color: #2b2b2b;
-                border: none;
-                border-radius: 10px;
-                padding: 10px;
-                padding-right: 20px;
-                padding-left: 20px;
-                color: #d3d3d3;
-                text-decoration: none;
-            }
-            .link:hover {
-                background-color: #393939;
-                border: 2px solid #323232;
-            }
-            nav {
-                position: fixed;
-                top: 75px;
-                left: 0;
-                width: 30%;
-                height: calc(100% - 75px);
-                display: flex;
-                flex-direction: column;
-                background-color: #2d2d2d;
-                color: #d3d3d3;
-                border-right: 3px solid #6c6c6c;
-                z-index: 2;
-            }
-            nav h3 {
-                padding: 15px;
-            }
-            .category {
-                display: flex;
-                flex-direction: column;
-                padding: 15px;
-            }
-            .category:hover {
-                background-color: #353535;
-            }
-            .label {
-                margin-top: 25px;
-                margin-bottom: 10px;
-            }
-            .input {
-                border-radius: 5px;
-                border: 2px solid #353535;
-                box-sizing: border-box;
-                background-color: #2d2d2d;
-                color: #d3d3d3;
-                padding: 6px 8px;
-            }
-            .none {
-                display: none;
-            }
-            #error, .edited {
-                color: #a14a4a;
-            }
-            .input:focus {
-                outline: none;
-                border-color: #777777;
-            }
-            .input:hover {
-                border-color: #6c6c6c;
-            }
-            .fetching-hint {
-                font-size: 11px;
-                color: #888;
-                margin-top: 6px;
-            }
-            section {
-                position: fixed;
-                top: 75px;
-                left: 30%;
-                height: calc(100% - 75px);
-                width: 40%;
-                padding: 15px;
-                display: flex;
-                flex-direction: column;
-                background-color: #414141;
-                color: #d3d3d3;
-            }
-            .section {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-            }
-            .iframe {
-                width: 80%;
-                height: 100%;
-                border: none;
-                background-color: #2d2d2d;
-                border-radius: 5px;
-                margin-top: 15px;
-            }
-            .output {
-                width: 80%;
-                height: 100%;
-                margin-top: 15px;
-                padding: 10px;
-                box-sizing: border-box;
-            }
-            aside {
-                position: fixed;
-                top: 75px;
-                right: 0;
-                height: calc(100% - 75px);
-                width: 30%;
-                padding: 15px;
-                display: flex;
-                flex-direction: column;
-                background-color: #2d2d2d;
-                color: #d3d3d3;
-                border-left: 3px solid #6c6c6c;
-                z-index: 2;
-            }
-            .edit {
-                background-color: #202020;
-                border: none;
-                border-radius: 5px;
-                color: #d3d3d3;
-                padding: 10px;
-                box-sizing: border-box;
-                margin-bottom: 10px;
-            }
-            footer {
-                background-color: #202020;
-                color: #d3d3d3;
-                padding: 10px;
-                position: fixed;
-                width: 100%;
-                height: 50px;
-                bottom: 0;
-                left: 0;
-                z-index: 5;
-            }
-            footer a {
-                color: #4DAAFC;
-            }
-            @media screen and (max-width: 768px) {
-                header {
-                    flex-direction: column;
-                    height: auto;
-                    padding: 20px;
-                }
-                .item {
-                    margin: 0;
-                }
-                .left {
-                    flex-direction: column;
-                    align-items: center;
-                }
-                .right {
-                    margin-top: 10px;
-                }
-                .link {
-                    padding: 10px;
-                    padding-right: 15px;
-                    padding-left: 15px;
-                    margin: 5px;
-                }
-                nav, section, aside {
-                    position: static;
-                    width: 100%;
-                    height: auto;
-                    left: 0;
-                    border-bottom: 3px solid #6c6c6c;
-                    border-left: none;
-                    border-right: none;
-                }
-                #sourcePreview {
-                    display: none;
-                }
-                main {
-                    display: flex;
-                    flex-direction: column;
-                    position: absolute;
-                    top: 200px;
-                    left: 0;
-                    width: 100%;
-                }
-                aside {
-                    margin-bottom: 60px;
-                }
-                .iframe {
-                    width: 95%;
-                    height: 40%;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <div class="left">
-                <img class="item icon" src="icon.png" alt="Icon">
-                <h1 class="item title">Project Sourcer</h1>
-                <p class="item description">Creates sources based on given information</p>
-            </div>
-            <div class="right">
-                <a class="item link" href="https://lehradt.github.io/profile">Profile</a>
-                <a class="item link" href="https://discord.com/users/1151971830983311441">Discord</a>
-            </div>
-        </header>
-        <main>
-            <nav>
-                <h3>Input</h3>
-                <div class="category">
-                    <label class="label">URL</label>
-                    <input type="url" id="urlInput" class="input" placeholder="https://example.com" required>
-                    <p id="error" class="none"></p>
-                    <p id="fetchingHint" class="fetching-hint none">Fetching metadata…</p>
-                </div>
-                <div class="category">
-                    <label class="label">Website</label>
-                    <p id="website" class="none"></p>
-                </div>
-                <div class="category">
-                    <label class="label">Title <span style="font-size:10px;color:#888">(auto-filled)</span></label>
-                    <input type="text" id="titleInput" class="input" placeholder="How to open a bottle?">
-                </div>
-                <div class="category">
-                    <label class="label">Author <span style="font-size:10px;color:#888">(auto-filled)</span></label>
-                    <input type="text" id="authorInput" class="input" placeholder="John Doe">
-                </div>
-                <div class="category">
-                    <label class="label">Last viewed</label>
-                    <p id="lastViewed" class="none"></p>
-                </div>
-            </nav>
-            <section>
-                <div class="section preview">
-                    <h3>Preview - Website</h3>
-                    <iframe id="siteFrame" src="" class="iframe"></iframe>
-                </div>
-                <div class="section preview">
-                    <h3>Preview - Source</h3>
-                    <output class="output" id="output">none</output>
-                </div>
-            </section>
-            <aside>
-                <h3>Source</h3>
-                <textarea id="editSource" class="edit"></textarea>
-                <p id="edited" class="none edited"></p>
-                <button id="copySource">Copy Source</button>
-            </aside>
-        </main>
-        <footer>
-            <p>❤️ Created with heart by <a href="https://lehradt.github.io/profile">Fabian Lehradt</a> - 01.03.2026</p>
-        </footer>
-        <script>
-        (() => {
-            const urlInput      = document.getElementById('urlInput');
-            const titleInput    = document.getElementById('titleInput');
-            const authorInput   = document.getElementById('authorInput');
-            const output        = document.getElementById('output');
-            const editArea      = document.getElementById('editSource');
-            const editedStatus  = document.getElementById('edited');
-            const websiteEl     = document.getElementById('website');
-            const lastViewedEl  = document.getElementById('lastViewed');
-            const siteFrame     = document.getElementById('siteFrame');
-            const errorEl       = document.getElementById('error');
-            const fetchingHint  = document.getElementById('fetchingHint');
-            const manualOverride = { title: false, author: false };
-            const TODAY = new Date().toLocaleDateString('de-DE', {
-                day: '2-digit', month: '2-digit', year: 'numeric'
-            });
-            function normaliseUrl(raw) {
-                raw = raw.trim();
-                if (!raw) return '';
-                return /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(raw) ? raw : 'https://' + raw;
-            }
-            function siteName(urlObj) {
-                let parts = urlObj.hostname.replace(/^www\./, '').split('.');
-                if (parts.length > 2 && parts[parts.length - 2].length <= 3) {
-                    parts = parts.slice(-3);
-                } else {
-                    parts = parts.slice(-2);
-                }
-                const name = parts[0];
-                return name.charAt(0).toUpperCase() + name.slice(1);
-            }
-            function titleFromSlug(urlObj) {
-                const segments = urlObj.pathname.split('/').filter(Boolean);
-                if (!segments.length) return '';
-                let slug = segments[segments.length - 1];
-                slug = slug.replace(/\.[a-z]{2,5}$/i, '');
-                slug = slug.replace(/-\d{5,}$/, '');
-                slug = slug.replace(/[-_]+/g, ' ').trim();
-                if (!slug) return '';
-                return slug.replace(/\b\w/g, c => c.toUpperCase());
-            }
-            function debounce(fn, ms) {
-                let timer;
-                return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
-            }
-            function generateSource() {
-                const raw = urlInput.value.trim();
-                if (!raw) { output.textContent = 'none'; editArea.value = ''; return; }
-                const url = normaliseUrl(raw);
-                if (url !== raw) urlInput.value = url;
-                let site = 'WEBSITE';
-                let slugTitle = '';
-                try {
-                    const urlObj = new URL(url);
-                    site = siteName(urlObj);
-                    slugTitle = titleFromSlug(urlObj);
-                } catch {
-                    showError('Invalid URL');
-                    return;
-                }
-                clearError();
-                const title  = titleInput.value.trim()  || slugTitle || '[TITEL UNBEKANNT]';
-                const author = authorInput.value.trim()  || 'O.A.';
-                const sourceStr = `${author}: "${title}", in: ${site}, URL: ${url} [Letzter Zugriff: ${TODAY}]`;
-                websiteEl.textContent = site;
-                websiteEl.classList.remove('none');
-                lastViewedEl.textContent = TODAY;
-                lastViewedEl.classList.remove('none');
-                output.textContent = sourceStr;
-                if (editArea.value === output.textContent || editArea.value === '') {
-                    editArea.value = sourceStr;
-                    editedStatus.classList.add('none');
-                }
-                siteFrame.src = url;
-            }
-            let currentFetchUrl = '';
-            async function fetchMetadata(url) {
-                currentFetchUrl = url;
-                fetchingHint.classList.remove('none');
-                try {
-                    const res = await fetch(
-                        `https://api.microlink.io/?url=${encodeURIComponent(url)}&palette=false&audio=false&video=false&iframe=false`
-                    );
-                    if (!res.ok) return;
-                    const { status, data } = await res.json();
-                    if (currentFetchUrl !== url) return;
-                    if (status !== 'success') return;
-                    if (!manualOverride.title && data.title) {
-                        titleInput.value = data.title;
-                    }
-                    if (!manualOverride.author) {
-                        const author = data.author || data.publisher || '';
-                        if (author) authorInput.value = author;
-                    }
-                    generateSource();
-                } catch {
-                } finally {
-                    if (currentFetchUrl === url) fetchingHint.classList.add('none');
-                }
-            }
-            function showError(msg) {
-                errorEl.textContent = msg;
-                errorEl.classList.remove('none');
-            }
-            function clearError() {
-                errorEl.textContent = '';
-                errorEl.classList.add('none');
-            }
-            titleInput.addEventListener('input', () => {
-                manualOverride.title = titleInput.value.trim() !== '';
-                generateSource();
-            });
-            authorInput.addEventListener('input', () => {
-                manualOverride.author = authorInput.value.trim() !== '';
-                generateSource();
-            });
-            const debouncedFetch = debounce((url) => fetchMetadata(url), 600);
-            urlInput.addEventListener('input', () => {
-                generateSource();
-                const url = normaliseUrl(urlInput.value);
-                if (url.startsWith('http')) debouncedFetch(url);
-            });
-            urlInput.addEventListener('paste', (e) => {
-                setTimeout(() => {
-                    generateSource();
-                    const url = normaliseUrl(urlInput.value);
-                    if (url.startsWith('http')) fetchMetadata(url);
-                }, 0);
-            });
-            editArea.addEventListener('input', () => {
-                const isDifferent = editArea.value !== output.textContent;
-                editedStatus.textContent = isDifferent ? 'You changed the source.' : '';
-                editedStatus.classList.toggle('none', !isDifferent);
-            });
-            document.getElementById('copySource').addEventListener('click', async () => {
-                if (!editArea.value) return;
-                try {
-                    await navigator.clipboard.writeText(editArea.value);
-                } catch {
-                    editArea.select();
-                    document.execCommand('copy');
-                }
-                alert('Copied!');
-            });
-        })();
-        </script>
-    </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Sourcer</title>
+<!-- ogp -->
+<meta property="og:title" content="Project Sourcer">
+<meta property="og:description" content="Creates sources based on given information.">
+<meta property="og:image" content="https://lehradt.github.io/ProjectSourcer/icon.png">
+<meta property="og:url" content="https://lehradt.github.io/ProjectSourcer">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.png">
+<!--
+    I created this program for people who don't like writing dozens of sources for presentations, etc.
+    It is completely free to use and there are no ads.
+    Because of that, I would appreciate it if you do not copy this code.
+    -- Fabian Lehradt
+-->
+<style>
+html { padding:0; margin:0; font-family:Arial,Helvetica,sans-serif; background:#2d2d2d; }
+header { position:fixed; top:0; left:0; width:100%; height:75px; padding:10px; display:flex; align-items:center; justify-content:space-between; background:#202020; color:#d3d3d3; z-index:3; }
+.left { display:flex; align-items:center; }
+.item { margin-left:10px; }
+.icon { height:55px; width:55px; border-radius:50%; }
+.desc { font-size:10px; position:relative; top:8px; }
+.right { display:flex; align-items:center; padding-right:20px; }
+.link { background:#2b2b2b; border:none; border-radius:10px; padding:10px 20px; color:#d3d3d3; text-decoration:none; }
+.link:hover { background:#393939; border:2px solid #323232; }
+nav { position:fixed; top:75px; left:0; width:30%; height:calc(100% - 125px); display:flex; flex-direction:column; background:#2d2d2d; color:#d3d3d3; border-right:3px solid #6c6c6c; z-index:2; overflow-y:auto; }
+nav h3 { padding:15px; }
+.cat { display:flex; flex-direction:column; padding:15px; }
+.cat:hover { background:#353535; }
+.lbl { margin-top:25px; margin-bottom:10px; }
+.input { border-radius:5px; border:2px solid #353535; box-sizing:border-box; background:#2d2d2d; color:#d3d3d3; padding:6px 8px; }
+.input:focus { outline:none; border-color:#777; }
+.input:hover { border-color:#6c6c6c; }
+.filled { font-size:14px; color:#d3d3d3; margin:0; min-height:20px; }
+.hint { font-size:11px; color:#888; margin-top:6px; }
+.none { display:none; }
+#error { color:#a14a4a; }
+.edited { color:#a14a4a; }
+section { position:fixed; top:75px; left:30%; height:calc(100% - 125px); width:40%; padding:15px; display:flex; flex-direction:column; background:#414141; color:#d3d3d3; }
+.sec { flex:1; display:flex; flex-direction:column; }
+.iframe { width:80%; height:100%; border:none; background:#2d2d2d; border-radius:5px; margin-top:15px; }
+.output { width:80%; height:100%; margin-top:15px; padding:10px; box-sizing:border-box; }
+aside { position:fixed; top:75px; right:0; height:calc(100% - 125px); width:30%; padding:15px; display:flex; flex-direction:column; background:#2d2d2d; color:#d3d3d3; border-left:3px solid #6c6c6c; z-index:2; }
+.edit { background:#202020; border:none; border-radius:5px; color:#d3d3d3; padding:10px; box-sizing:border-box; margin-bottom:10px; flex:1; resize:none; }
+/*
+    footer
+*/
+footer { position:fixed; bottom:0; left:0; width:100%; height:50px; padding:10px; background:#202020; color:#d3d3d3; z-index:5; }
+footer a { color:#4DAAFC; }
+/*
+    optimization for mobile phones
+*/
+@media (max-width:768px) {
+  header { flex-direction:column; height:auto; padding:20px; }
+  .item { margin:0; }
+  .left { flex-direction:column; align-items:center; }
+  .right { margin-top:10px; }
+  .link { padding:10px 15px; margin:5px; }
+  nav,section,aside { position:static; width:100%; height:auto; border-bottom:3px solid #6c6c6c; border-left:none; border-right:none; }
+  main { display:flex; flex-direction:column; position:absolute; top:200px; left:0; width:100%; }
+  aside { margin-bottom:60px; }
+  .iframe { width:95%; height:40%; }
+}
+</style>
+</head>
+<body>
+<!-- inputs
+mine: need to change profile url
+-->
+<header>
+  <div class="left">
+    <img class="item icon" src="icon.png" alt="Icon">
+    <h1 class="item">Project Sourcer</h1>
+    <p class="item desc">Creates sources based on given information</p>
+  </div>
+  <div class="right">
+    <a class="item link" href="https://lehradt.github.io/profile">Profile</a>
+    <a class="item link" href="https://discord.com/users/1151971830983311441">Discord</a>
+  </div>
+</header>
+<main>
+  <!-- inputs -->
+  <nav>
+    <h3>Input</h3>
+    <div class="cat">
+      <label class="lbl">URL</label>
+      <input type="url" id="urlInput" class="input" placeholder="https://example.com">
+      <p id="error" class="none"></p>
+      <p id="fetchHint" class="hint none">Fetching metadata…</p>
+    </div>
+    <div class="cat">
+      <label class="lbl">Website</label>
+      <p id="website" class="filled">–</p>
+    </div>
+    <div class="cat">
+      <label class="lbl">Title</label>
+      <p id="titleDisplay" class="filled">–</p>
+      <input type="text" id="titleInput" class="input" placeholder="Manuell überschreiben…" style="margin-top:6px">
+    </div>
+    <div class="cat">
+      <label class="lbl">Author</label>
+      <p id="authorDisplay" class="filled">–</p>
+      <input type="text" id="authorInput" class="input" placeholder="Manuell überschreiben…" style="margin-top:6px">
+    </div>
+    <div class="cat">
+      <label class="lbl">Last viewed</label>
+      <p id="lastViewed" class="filled">–</p>
+    </div>
+  </nav>
+  <!-- preview
+  some websites cant be accessed by the iframe
+  -->
+  <section>
+    <div class="sec">
+      <h3>Preview - Website</h3>
+      <iframe id="siteFrame" src="" class="iframe"></iframe>
+    </div>
+    <div class="sec">
+      <h3>Preview - Source</h3>
+      <output class="output" id="output">none</output>
+    </div>
+  </section>
+  <!-- finish 
+  source can by manually edited
+  -->
+  <aside>
+    <h3>Source</h3>
+    <textarea id="editSource" class="edit"></textarea>
+    <p id="edited" class="none edited"></p>
+    <button id="copyBtn">Copy Source</button>
+  </aside>
+</main>
+<!-- footer
+mine: need to change profile url
+-->
+<footer>
+  <p>❤️ Created with heart by <a href="https://lehradt.github.io/profile">Fabian Lehradt</a> - 01.03.2026</p>
+</footer>
+<script>
+// variables
+(() => {
+  const $ = id => document.getElementById(id);
+  const url     = $('urlInput');
+  const titleIn = $('titleInput');
+  const authIn  = $('authorInput');
+  const out     = $('output');
+  const edit    = $('editSource');
+  const edited  = $('edited');
+  const webEl   = $('website');
+  const lastEl  = $('lastViewed');
+  const frame   = $('siteFrame');
+  const errEl   = $('error');
+  const hint    = $('fetchHint');
+  const titleDp = $('titleDisplay');
+  const authDp  = $('authorDisplay');
+  const override = { title: false, author: false };
+  const today = new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+  let fetchingUrl = '';
+  // url syntax
+  function norm(raw) {
+    raw = raw.trim();
+    if (!raw) return '';
+    return /^[a-zA-Z][\w+\-.]*:\/\//.test(raw) ? raw : 'https://' + raw;
+  }
+  // site infos
+  function getSite(u) {
+    let parts = u.hostname.replace(/^www\./, '').split('.');
+    parts = (parts.length > 2 && parts[parts.length - 2].length <= 3) ? parts.slice(-3) : parts.slice(-2);
+    return parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+  }
+  function slugToTitle(u) {
+    let s = u.pathname.split('/').filter(Boolean).pop() || '';
+    s = s.replace(/\.[a-z]{2,5}$/i, '').replace(/-\d{5,}$/, '').replace(/[-_]+/g, ' ').trim();
+    return s ? s.replace(/\b\w/g, c => c.toUpperCase()) : '';
+  }
+  function debounce(fn, ms) {
+    let t;
+    return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+  }
+  // create source
+  function build() {
+    const raw = url.value.trim();
+    if (!raw) { out.textContent = 'none'; edit.value = ''; return; }
+    const u = norm(raw);
+    if (u !== raw) url.value = u;
+    let site = 'WEBSITE', slug = '';
+    try {
+      const parsed = new URL(u);
+      site = getSite(parsed);
+      slug = slugToTitle(parsed);
+    } catch {
+      errEl.textContent = 'Invalid URL';
+      errEl.classList.remove('none');
+      return;
+    }
+    errEl.classList.add('none');
+    const title  = titleIn.value.trim()  || slug || '[TITEL UNBEKANNT]';
+    const author = authIn.value.trim()   || 'O.A.';
+    titleDp.textContent  = title;
+    authDp.textContent   = author;
+    webEl.textContent    = site;
+    lastEl.textContent   = today;
+    const src = `${author}: "${title}", in: ${site}, URL: ${u} [Letzter Zugriff: ${today}]`;
+    out.textContent = src;
+    if (edit.value === out.textContent || edit.value === '') {
+      edit.value = src;
+      edited.classList.add('none');
+    }
+    frame.src = u;
+  }
+  // api
+  async function fetchMeta(u) {
+    fetchingUrl = u;
+    hint.classList.remove('none');
+    try {
+      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(u)}&palette=false&audio=false&video=false&iframe=false`);
+      if (!res.ok) return;
+      const { status, data } = await res.json();
+      if (fetchingUrl !== u || status !== 'success') return;
+      if (!override.title && data.title)  titleIn.value = data.title;
+      if (!override.author) {
+        const a = data.author || data.publisher || '';
+        if (a) authIn.value = a;
+      }
+      build();
+    } catch {}
+    finally { if (fetchingUrl === u) hint.classList.add('none'); }
+  }
+  // update source
+  const lazyFetch = debounce(fetchMeta, 600);
+  titleIn.addEventListener('input', () => { override.title  = !!titleIn.value.trim(); build(); });
+  authIn.addEventListener('input',  () => { override.author = !!authIn.value.trim();  build(); });
+  url.addEventListener('input', () => {
+    build();
+    const u = norm(url.value);
+    if (u.startsWith('http')) lazyFetch(u);
+  });
+  url.addEventListener('paste', () => setTimeout(() => {
+    build();
+    const u = norm(url.value);
+    if (u.startsWith('http')) fetchMeta(u);
+  }, 0));
+  // changes
+  edit.addEventListener('input', () => {
+    const diff = edit.value !== out.textContent;
+    edited.textContent = diff ? 'You changed the source.' : '';
+    edited.classList.toggle('none', !diff);
+  });
+  // copy
+  $('copyBtn').addEventListener('click', async () => {
+    if (!edit.value) return;
+    try { await navigator.clipboard.writeText(edit.value); }
+    catch { edit.select(); document.execCommand('copy'); }
+    alert('Copied!');
+  });
+})();
+</script>
+</body>
 </html>
