@@ -68,7 +68,7 @@ footer a { color:#4DAAFC; }
 </style>
 </head>
 <body>
-<!-- inputs
+<!-- header
 mine: need to change profile url
 -->
 <header>
@@ -141,8 +141,8 @@ mine: need to change profile url
   <p>❤️ Created with heart by <a href="https://lehradt.github.io/profile">Fabian Lehradt</a> - 01.03.2026</p>
 </footer>
 <script>
-// variables
 (() => {
+  // variables
   const $ = id => document.getElementById(id);
   const url     = $('urlInput');
   const titleIn = $('titleInput');
@@ -230,7 +230,6 @@ mine: need to change profile url
     } catch {}
     finally { if (fetchingUrl === u) hint.classList.add('none'); }
   }
-  // update source
   const lazyFetch = debounce(fetchMeta, 600);
   titleIn.addEventListener('input', () => { override.title  = !!titleIn.value.trim(); build(); });
   authIn.addEventListener('input',  () => { override.author = !!authIn.value.trim();  build(); });
