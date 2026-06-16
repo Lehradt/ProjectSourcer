@@ -1,4 +1,4 @@
-<div align="center"># projectsourcer <img src="icon.png" alt="project sourcer" width="60" height="60" style="border-radius: 50%; object-fit: cover;"></div>
+# ProjectSourcer
 ProjectSourcer is a student project. Due to the "Project Presentation" in every 'Realschule' in Bavaria, Germany you need to give all sources in a specific pattern. Normally it takes houres and houres to write those sources by hand but know ... the ProjectSourcer allows to generate the source just by pasting the URL. With the microlink api the website looks up the pasted url and gets author, title etc. Youve got a problem with the source? You can easily change the Information with the inputs. Max. 600ms after pasting the URL you get the whole source to copy.
 ---
 ## Tutorial
